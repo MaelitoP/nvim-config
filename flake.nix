@@ -8,21 +8,33 @@
   };
 
   outputs = { self, nixpkgs, flake-utils, home-manager, ... }:
-    flake-utils.lib.eachDefaultSystem (system:
-      let
-        pkgs = import nixpkgs { inherit system; };
-      in {
-        packages.default = pkgs.stdenv.mkDerivation {
-          name = "nvim-config";
-          src = self;
-          installPhase = ''
-            mkdir -p $out
-            cp -r * $out/
-          '';
-        };
+    let
+      eachSystem = flake-utils.lib.eachDefaultSystem (system:
+        let
+          pkgs = import nixpkgs { inherit system; };
+        in {
+          packages.default = pkgs.stdenv.mkDerivation {
+            name = "nvim-config";
+            src = self;
+            installPhase = ''
+              mkdir -p $out
+              cp -r * $out/
+            '';
+          };
 
-        homeManagerModules.nvim-config = { config, ... }: {
+          homeManagerModules = {
+            nvim-config = { config, ... }: {
+              home.file.".config/nvim".source = self.outPath;
+            };
+          };
+        });
+    in
+    flake-utils.lib.flattenTree eachSystem // {
+      homeManagerModules = {
+        nvim-config = { config, ... }: {
           home.file.".config/nvim".source = self.outPath;
         };
-      });
+      };
+    };
 }
+
