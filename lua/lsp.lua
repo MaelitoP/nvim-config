@@ -1,14 +1,10 @@
-local capabilities = vim.lsp.protocol.make_client_capabilities()
+local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
 capabilities = require("blink.cmp").get_lsp_capabilities(capabilities)
 
 capabilities.textDocument.foldingRange = {
   dynamicRegistration = false,
   lineFoldingOnly = true,
-}
-
-capabilities.textDocument.formatting = {
-  dynamicRegistration = false,
 }
 
 capabilities.textDocument.semanticTokens.augmentsSyntaxTokens = false
