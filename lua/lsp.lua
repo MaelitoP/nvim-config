@@ -49,5 +49,6 @@ vim.lsp.enable({
   'intelephense',   -- PHP
   'pyright',        -- Python
   'ocamllsp',       -- OCaml
+  'gopls',          -- Go
 })
 
