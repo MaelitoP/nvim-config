@@ -1,4 +1,4 @@
-local capabilities = require("cmp_nvim_lsp").default_capabilities()
+local capabilities = vim.lsp.protocol.make_client_capabilities()
 
 capabilities = require("blink.cmp").get_lsp_capabilities(capabilities)
 
@@ -42,6 +42,31 @@ capabilities.experimental = {
   },
 }
 
+vim.lsp.config.lua_ls = {
+  cmd = { "lua-language-server" },
+  filetypes = { "lua" },
+  root_markers = { ".luarc.json", ".git", vim.uv.cwd() },
+  settings = {
+    Lua = {
+      telemetry = {
+        enable = false,
+      },
+    },
+  },
+}
+
+vim.lsp.config.nixd = {
+  cmd = { 'nixd' },
+  filetypes = { 'nix' },
+  root_markers = { 'flake.nix', 'git' },
+}
+
+vim.lsp.config.nil_ls = {
+  cmd = { 'nil' },
+  filetypes = { 'nix' },
+  root_markers = { 'flake.nix', '.git' },
+}
+
 vim.lsp.enable({
   'lua_ls',         -- Lua
   'rust_analyzer',  -- Rust
@@ -50,5 +75,7 @@ vim.lsp.enable({
   'pyright',        -- Python
   'ocamllsp',       -- OCaml
   'gopls',          -- Go
+  'nixd',           -- Nix
+  'nil_ls'
 })
 
