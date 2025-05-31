@@ -1,4 +1,5 @@
 require("lazy").setup("plugins", {
+  lockfile = vim.fn.stdpath("data") .. "/lazy-lock.json",
   concurrency = 4,
   defaults = {
     lazy = true,
