@@ -2,7 +2,7 @@ return {
   {
     "neovim/nvim-lspconfig",
     name = "lspconfig",
-    event = { "BufReadPost", "BufNewFile" },
+    event = { "BufReadPost", "BufNewFile", "BufEnter" },
     keys = function()
       require("mappings").lsp()
     end,
