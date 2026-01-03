@@ -71,7 +71,14 @@ vim.api.nvim_create_autocmd("User", {
   pattern = "VeryLazy",
   callback = function()
     vim.o.shada = shada
-    pcall(vim.cmd.rshada, { bang = true })
+    local ok, err = pcall(vim.cmd.rshada, { bang = true })
+    if not ok then
+      vim.notify(
+        "Failed to load shada file: " .. tostring(err),
+        vim.log.levels.WARN,
+        { title = "ShaDa Loading" }
+      )
+    end
   end,
 })
 

@@ -89,8 +89,6 @@ vim.lsp.config.tsserver = {
   end,
 }
 
--- Biome: Fast formatter/linter for JS/TS/JSON/CSS
--- Only activates in projects with biome.json config
 vim.lsp.config.biome = {
   cmd = { 'biome', 'lsp-proxy' },
   filetypes = { 'javascript', 'javascriptreact', 'json', 'jsonc', 'typescript', 'typescriptreact', 'astro', 'svelte', 'vue', 'css' },
