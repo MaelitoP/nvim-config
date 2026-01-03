@@ -19,7 +19,7 @@ function M.toggle_inlay_hint()
   vim.lsp.inlay_hint.enable(not is_enabled)
 end
 
--- Toggle flow state mode, Disable most of the unnecessary plugins :oOc
+-- Toggle flow state mode, Disable most of the unnecessary plugins
 local state = 0
 function M.toggle_flow()
   if state == 0 then
@@ -48,18 +48,31 @@ autocmd("FileType", {
   end,
 })
 
+-- Rate-limited LSP progress notifications
+local lsp_progress_last_update = 0
+local LSP_PROGRESS_THROTTLE_MS = 100
+
 autocmd("LspProgress", {
   ---@param ev {data: {client_id: integer, params: lsp.ProgressParams}}
   callback = function(ev)
-    local spinner = { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" }
-    vim.notify(vim.lsp.status(), "info", {
-      id = "lsp_progress",
-      title = "LSP Progress",
-      opts = function(notif)
-        notif.icon = ev.data.params.value.kind == "end" and " "
-            or spinner[math.floor(vim.uv.hrtime() / (1e6 * 80)) % #spinner + 1]
-      end,
-    })
+    local now = vim.uv.hrtime()
+    local elapsed_ms = (now - lsp_progress_last_update) / 1e6
+
+    -- Always show completion, throttle progress updates
+    local is_complete = ev.data.params.value.kind == "end"
+
+    if is_complete or elapsed_ms >= LSP_PROGRESS_THROTTLE_MS then
+      lsp_progress_last_update = now
+      local spinner = { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" }
+      vim.notify(vim.lsp.status(), "info", {
+        id = "lsp_progress",
+        title = "LSP Progress",
+        opts = function(notif)
+          notif.icon = is_complete and " "
+              or spinner[math.floor(now / (1e6 * 80)) % #spinner + 1]
+        end,
+      })
+    end
   end,
 })
 
