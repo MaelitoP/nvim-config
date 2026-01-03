@@ -71,13 +71,31 @@ vim.lsp.config.tsserver = {
   cmd = { 'typescript-language-server', '--stdio' },
   filetypes = { 'javascript', 'javascriptreact', 'typescript', 'typescriptreact' },
   root_markers = { 'package.json', 'tsconfig.json', 'jsconfig.json', '.git' },
+  -- Disable tsserver formatting when biome is available
+  on_attach = function(client, bufnr)
+    -- Check if biome is attached to this buffer
+    local biome_active = false
+    for _, c in ipairs(vim.lsp.get_clients({ bufnr = bufnr })) do
+      if c.name == 'biome' then
+        biome_active = true
+        break
+      end
+    end
+    -- Disable tsserver formatting if biome is active
+    if biome_active then
+      client.server_capabilities.documentFormattingProvider = false
+      client.server_capabilities.documentRangeFormattingProvider = false
+    end
+  end,
 }
 
+-- Biome: Fast formatter/linter for JS/TS/JSON/CSS
+-- Only activates in projects with biome.json config
 vim.lsp.config.biome = {
   cmd = { 'biome', 'lsp-proxy' },
   filetypes = { 'javascript', 'javascriptreact', 'json', 'jsonc', 'typescript', 'typescriptreact', 'astro', 'svelte', 'vue', 'css' },
   root_markers = { 'biome.json', 'biome.jsonc' },
-  single_file_support = false,
+  single_file_support = false,  -- Only enable in projects with biome config
 }
 
 vim.lsp.enable({
