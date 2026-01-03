@@ -146,8 +146,10 @@ M.lsp = function()
     modules.toggle_inlay_hint() -- toggle inlay hint
   end, "Toggle inlay hint")
 
+  -- Create augroup to prevent duplicate autocmds
+  local lsp_attach_group = vim.api.nvim_create_augroup("LspMappings", { clear = true })
   vim.api.nvim_create_autocmd("LspAttach", {
-    --group = lspgroup,
+    group = lsp_attach_group,
     callback = function(event)
       vim.keymap.set("n", "<leader>k", function() vim.lsp.buf.hover({ border = "rounded" }) end, { buffer = event.buf })
     end
