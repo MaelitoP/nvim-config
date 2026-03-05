@@ -29,19 +29,18 @@ return {
       "BufReadPost",
       "BufNewFile",
     },
-    config = function()
-      require("nvim-treesitter.configs").setup {
-        ensure_installed = {
-          "lua", "vimdoc", "rust", "go", "astro", "json", "toml", "markdown",
-          "typescript", "javascript", "php", "python", "ocaml"
-        },
-        highlight = {
-          enable = true,
-          use_languagetree = true,
-        },
-        indent = { enable = true },
-      }
-    end,
+    main = "nvim-treesitter.configs",
+    opts = {
+      ensure_installed = {
+        "lua", "vimdoc", "rust", "go", "astro", "json", "toml", "markdown",
+        "typescript", "javascript", "php", "python", "ocaml"
+      },
+      highlight = {
+        enable = true,
+        use_languagetree = true,
+      },
+      indent = { enable = true },
+    },
   },
 
   {
