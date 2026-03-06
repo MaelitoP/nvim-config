@@ -23,24 +23,14 @@ return {
   {
     "nvim-treesitter/nvim-treesitter",
     name = "treesitter",
-    cmd = { "TSInstall", "TSBufEnable", "TSBufDisable", "TSModuleInfo" },
+    lazy = false,
     build = ":TSUpdate",
-    event = {
-      "BufReadPost",
-      "BufNewFile",
-    },
-    main = "nvim-treesitter.configs",
-    opts = {
-      ensure_installed = {
+    config = function()
+      require("nvim-treesitter").install {
         "lua", "vimdoc", "rust", "go", "astro", "json", "toml", "markdown",
-        "typescript", "javascript", "php", "python", "ocaml"
-      },
-      highlight = {
-        enable = true,
-        use_languagetree = true,
-      },
-      indent = { enable = true },
-    },
+        "typescript", "javascript", "php", "python", "ocaml",
+      }
+    end,
   },
 
   {
