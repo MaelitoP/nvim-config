@@ -34,6 +34,13 @@ return {
   },
 
   {
+    "akinsho/git-conflict.nvim",
+    version = "*",
+    event = { "BufReadPre", "BufNewFile" },
+    opts = {},
+  },
+
+  {
     name = "options",
     event = "VeryLazy",
     dir = conf_path,
