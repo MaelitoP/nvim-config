@@ -81,6 +81,23 @@ M.mini = function()
     local _ = require("mini.files").close() or require("mini.files").open()
   end, "Toggle minifiles")
 
+  -- Open file under cursor in a new tab from the minifiles explorer
+  vim.api.nvim_create_autocmd("User", {
+    pattern = "MiniFilesBufferCreate",
+    callback = function(args)
+      vim.keymap.set("n", "<C-t>", function()
+        local minifiles = require "mini.files"
+        local cur_target = minifiles.get_explorer_state().target_window
+        local new_target = vim.api.nvim_win_call(cur_target, function()
+          vim.cmd "tab split"
+          return vim.api.nvim_get_current_win()
+        end)
+        minifiles.set_target_window(new_target)
+        minifiles.go_in { close_on_file = true }
+      end, { buffer = args.data.buf_id, desc = "Open in new tab" })
+    end,
+  })
+
   map({ "n" }, "<leader>bq", function()
     require("mini.bufremove").delete()
   end, "Remove current buffer")
