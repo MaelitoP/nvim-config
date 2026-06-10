@@ -81,20 +81,26 @@ M.mini = function()
     local _ = require("mini.files").close() or require("mini.files").open()
   end, "Toggle minifiles")
 
-  -- Open file under cursor in a new tab from the minifiles explorer
+  -- Open file under cursor in a new tab/split from the minifiles explorer
+  local minifiles_open_in = function(buf_id, lhs, direction, desc)
+    vim.keymap.set("n", lhs, function()
+      local minifiles = require "mini.files"
+      local cur_target = minifiles.get_explorer_state().target_window
+      local new_target = vim.api.nvim_win_call(cur_target, function()
+        vim.cmd(direction .. " split")
+        return vim.api.nvim_get_current_win()
+      end)
+      minifiles.set_target_window(new_target)
+      minifiles.go_in { close_on_file = true }
+    end, { buffer = buf_id, desc = desc })
+  end
+
   vim.api.nvim_create_autocmd("User", {
     pattern = "MiniFilesBufferCreate",
     callback = function(args)
-      vim.keymap.set("n", "<C-t>", function()
-        local minifiles = require "mini.files"
-        local cur_target = minifiles.get_explorer_state().target_window
-        local new_target = vim.api.nvim_win_call(cur_target, function()
-          vim.cmd "tab split"
-          return vim.api.nvim_get_current_win()
-        end)
-        minifiles.set_target_window(new_target)
-        minifiles.go_in { close_on_file = true }
-      end, { buffer = args.data.buf_id, desc = "Open in new tab" })
+      minifiles_open_in(args.data.buf_id, "<C-t>", "tab", "Open in new tab")
+      minifiles_open_in(args.data.buf_id, "<C-s>", "belowright horizontal", "Open in horizontal split")
+      minifiles_open_in(args.data.buf_id, "<C-v>", "belowright vertical", "Open in vertical split")
     end,
   })
 
