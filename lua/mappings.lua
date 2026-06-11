@@ -19,7 +19,8 @@ M.general = function()
 
   -- Copy and paste in the same cursor position
   map("n", "p", function()
-    local row, col = unpack(vim.api.nvim_win_get_cursor(0))
+    local pos = vim.api.nvim_win_get_cursor(0)
+    local row, col = pos[1], pos[2]
     vim.cmd('put')
     vim.api.nvim_win_set_cursor(0, { row + 1, col })
   end)

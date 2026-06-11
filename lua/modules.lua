@@ -53,7 +53,7 @@ local lsp_progress_last_update = 0
 local LSP_PROGRESS_THROTTLE_MS = 100
 
 autocmd("LspProgress", {
-  ---@param ev {data: {client_id: integer, params: lsp.ProgressParams}}
+  ---@param ev {data: {client_id: integer, params: {value: {kind: string}}}}
   callback = function(ev)
     local now = vim.uv.hrtime()
     local elapsed_ms = (now - lsp_progress_last_update) / 1e6
