@@ -50,6 +50,12 @@ M.general = function()
   map("n", "<C-d>", "<C-d>zz")
   map("n", "<C-u>", "<C-u>zz")
 
+  map("n", "<leader>pp", function()
+    local path = vim.fn.expand "%:p"
+    vim.fn.setreg("+", path)
+    vim.notify("Copied: " .. path)
+  end, "Copy absolute file path")
+
   map("v", "??", 'y:h <C-R>"<cr>"') -- Show vim help
   map("v", "?/", 'y:/ <C-R>"<cr>"') -- Search across the buffer
 end
