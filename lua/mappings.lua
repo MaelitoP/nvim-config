@@ -88,6 +88,18 @@ M.mini = function()
     local _ = require("mini.files").close() or require("mini.files").open()
   end, "Toggle minifiles")
 
+  map({ "n" }, "<leader>fd", function()
+    minipick.builtin.cli(
+      { command = { "fd", "--type", "directory", "--color=never" } },
+      { source = {
+        name = "Directories",
+        choose = function(item)
+          require("mini.files").open(item)
+        end,
+      } }
+    )
+  end, "Find directory and open in minifiles")
+
   -- Open file under cursor in a new tab/split from the minifiles explorer
   local minifiles_open_in = function(buf_id, lhs, direction, desc)
     vim.keymap.set("n", lhs, function()
