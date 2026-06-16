@@ -94,7 +94,9 @@ M.mini = function()
       { source = {
         name = "Directories",
         choose = function(item)
-          require("mini.files").open(item)
+          vim.schedule(function()
+            require("mini.files").open(item)
+          end)
         end,
       } }
     )
