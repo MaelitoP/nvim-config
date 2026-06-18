@@ -10,7 +10,7 @@ return {
     transparent_background = not vim.g.neovide,
     compile_path = vim.fn.stdpath "cache" .. "/catppuccin",
     compile = true,
-    flavour = "macchiato",
+    flavour = "mocha",
     integrations = {
       snacks = {
         enabled = false,
