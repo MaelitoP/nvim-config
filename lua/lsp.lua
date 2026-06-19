@@ -106,6 +106,7 @@ vim.lsp.enable({
   'ocamllsp',       -- OCaml
   'gopls',          -- Go
   'hls',            -- Haskell
+  'jdtls',          -- Java
   'nixd',           -- Nix
   'nil_ls'
 })
