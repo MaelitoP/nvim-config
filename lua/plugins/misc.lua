@@ -28,7 +28,7 @@ return {
     config = function()
       require("nvim-treesitter").install {
         "lua", "vimdoc", "rust", "go", "astro", "json", "toml", "markdown",
-        "typescript", "javascript", "php", "python", "ocaml",
+        "typescript", "javascript", "php", "python", "ocaml", "haskell",
       }
     end,
   },

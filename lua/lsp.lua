@@ -105,6 +105,7 @@ vim.lsp.enable({
   'pyright',        -- Python
   'ocamllsp',       -- OCaml
   'gopls',          -- Go
+  'hls',            -- Haskell
   'nixd',           -- Nix
   'nil_ls'
 })
