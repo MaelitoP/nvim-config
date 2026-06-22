@@ -149,6 +149,10 @@ M.mini = function()
     miniextra.pickers.git_hunks()
   end, "Show git hunks")
 
+  map("n", "<leader>gb", function()
+    vim.cmd "Git blame -- %"
+  end, "Show git blame")
+
   map("n", "<leader>dp", function()
     miniextra.pickers.diagnostic()
   end, "Diagnostic in picker")
