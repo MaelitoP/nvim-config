@@ -55,13 +55,13 @@ return {
       phpstan.cmd = "docker"
       phpstan.stdin = false
       phpstan.append_fname = true
-      phpstan.args = function()
-        local container = php_cli_container(find_root(0))
-        return {
-          "exec", "-i", container,
-          "./tools/phpstan-ide", "analyze", "--no-progress", "--error-format=json",
-        }
-      end
+      phpstan.args = {
+        "exec", "-i",
+        function()
+          return php_cli_container(find_root(0))
+        end,
+        "./tools/phpstan-ide", "analyze", "--no-progress", "--error-format=json",
+      }
 
       local builtin_parser = phpstan.parser
       phpstan.parser = function(output, bufnr)
